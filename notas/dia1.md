@@ -337,8 +337,15 @@ Devops (heredado de ALM = Application Lifecycle Management) define una serie de 
 
                 Automatizables          Herramientas?
 - Plan               poco
-- Code               cada día más...
+- Code               cada día más...        
+                                            Más allá de las IAs
+                                            JAVA:
+                                                Gestión de BBDD(creación, cargas iniciales, actualización de versiones):
+                                                    Liquibase, Flyway, JPA (Hibernate)
+                                                Generación de Openapi(swagger) para servicios rest:
+                                                    Springdoc
 - Build              totalmente             JAVA: maven , gradle
+                                              maven: compilar, empaquetar, generar documentación, generar informes de pruebas, ejecutar pruebas
                                             JS/TS: npm, yarn, webpack
                                             C#: dotnet, msbuild, nuget
                                             ...
@@ -360,7 +367,7 @@ Devops (heredado de ALM = Application Lifecycle Management) define una serie de 
                     - Me fío de las pruebas que se ejecutan en la máquina del desarrollador? No... su entorno está maleao!
                     - Me fío de las pruebas que se ejecutan en la máquina del tester?        No... su entorno está maleao!
                     - Me fío de las pruebas que se ejecutan en un entorno controlado de pruebas, creado el día 1 de proyecto:
-                      Desarrollo / Pruebas(Preproducción) / Producción
+                        Desarrollo / Pruebas(Preproducción) / Producción
                       Antiguamente SI me fiaba de estas pruebas. Era el entorno donde las hacía.
                       Hoy en día NO. POR QUE? Por el cambio en las formas de trabajo. 
                       - Con una met tradicional, cuántas veces hacía pruebas? 1 al acabar.. por ende cuatas veces instalaba en pruebas? 1, 2 Cuando acababa y se iban a hacer las pruebas
@@ -372,15 +379,68 @@ Devops (heredado de ALM = Application Lifecycle Management) define una serie de 
                         Tengo que automatizar la creación y destrucción de estos entornos:
                         - Docker, Kubernetes
                         - Terraform, Vagrant, Ansible, puppet, chef, salt.
-
-- Release
-- Deploy
-- Operate
-- Monitor
+-------> Continuous Integration: Integración Continua:
+Tener CONTINUAMENTE en el entorno de INTEGRACION la última versión del código sometida a pruebas automatizadas.
+Cuál es el producto de un proceso de integración continua? UN INFORME DE PRUEBAS EN TIEMPO REAL! -> Esto me permite saber en todo momento COMO ESTA EL PROYECTO!
 
 
+- Release   Acto de poner en manos de mi cliente mi producto (sus nuevas versiones)
+  - App para teléfonos móviles: Subir el apk a la tienda correspondiente (Google Play, App Store)
+  - Librería de uso público: REGISTROS DE ARTEFACTOS
+    - JAVA -> Maven central
+    - JS/TS -> npm
+    - C# -> NuGet
+    - Python -> PyPI
+  - Si mi producto lo ofrezco vía una imagen de contenedor, la release es subirlo a DOCKER HUB.
+  - Si estoy haciendo una lib o app interna a mi empresa, subo el artefacto a un registro interno:
+   - Nexus
+   - Artifactory
+   - Gitlab Registry
 
+-------> Continuous Delivery: Entrega Continua
 
+- Deploy             Automatizable en muchos casos!, en otros no
+    - Si estoy montando una app mobile o una app de escritorio, el deploy lo hará un humano... 
+
+-------> Continuous Deployment: Despliegue Continuo
+
+- Operate           Automatizable
+- Monitor           Automatizable
+
+-------> Devops 
+
+Las tareas se van autoamtizando.. sueltas!
+- Compilar el proyecto en automático con maven (lo hace un desarrollador)
+- Pruebas automatizadas con selenium de una web app (lo hará un tester)
+- Creación de un entorno en un cloud (lo hará un administrador de sistemas) (Muchas veces a los sysadmin que automatizan se les llama DEVOPS = REGULAR!)
+
+Otra cosa es automatizar procesos!
+  - Que un desarrollador haga commit, etiquete el commit y haga pus a un repo remoto de git. (EVENTO = TRIGGER)
+  - Se crea un contenedor, con java, con maven
+  - Se copian dentro todos los ficheros de código del desarrollador
+  - Se compila con maven
+  - Se ejecutan pruebas unitarias y de integración con maven
+  - Para las de integración, quizás necesito una BBDD real (que creo con un contenedor - test containers)
+  - Genero un informe de las pruebas que van bien y van mal
+  - Calculo un informe JACOCO de cobertura de código de las pruebas que se han ejecutado
+  - Le paso esa información a un SonarQube, para que emita veredicto (QUALITY GATE)
+  - Genero una infra (o la acualizo) para otro tipo de pruebas no funcionales (rendimiento, ha, carga) : PRUEBAS DE SISTEMA
+  - Genero informe de esas pruebas
+  - Subo en caso que vaya bien el artefacto a un registry
+    - O genero una imagen de contenedor que incluya mi artefacto desplegado a un registry (Docker Hub, Gitlab Registry, etc.)
+  - Lanzo una instalación de eso en mi cluster de kubernetes o en un entorno creado ad-hoc (y actualizado bajo demanda) para que los usuarios ya puedan acceder a la app.
+
+Y TODO ELLO SIN INTERVENCION HUMANA!
+
+Para automatizar los procesos necesitamos herramientas tipo JENKINS o GITLAB CI/CD.
+
+Estos procesos en el mundo IT los llamamos pipelines... Y son SCRIPTS (PROGRAMAS)
+Esos scripts los debe montar alguien que tenga visión sobre el ciclo de vida COMPLETO del proyecto.
+A este perfil es a lo que originalmente se llamó DEVOPS.
+
+---
+
+En todo esto es donde KUBERNETES ENCAJA A LA PERFECCCION.
 
 
 

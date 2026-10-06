@@ -1,0 +1,228 @@
+# Es un lenguaje alternativo a JSON o XML.
+# Se os parece sospechosamente el nombre YAML al de otros lenguajes?
+#                                         XML
+#                                        HTML
+#                                        SGML
+# Podríamos pensar que YAML significa: Yet Another Markup Language
+# Pero la realidad es que significa:   YAML Ain't Markup Language
+# Es decir, NO BUSQUES MARQUITAS POR AQUI QUE NO LAS VAS A ENCONTRAR
+# Yaml está fuertemente inspirado en Python.
+# Y es un lenguaje pensado para SERES HUMANO, no para computadoras, como XML y JSON
+# Es un lenguaje para estructurar datos.
+# En los documentos yaml podemos usar comentarios.... aleluya! 
+# Todo lo escriba que detrás de un # es un comentario.
+# Otra novedad y característica importantísima de yaml.
+# En un fichero yaml puedo tener muchos documentos yaml.
+# En XML, o JSON en un fichero tengo un único documento.
+# En YAML, dentro de un fichero puedo tener muchos documentos
+# Hay una marca (sintaxis) que usamos para indicar inicio de documento. 
+# Es obligatoria salvo en el primer documento. ---
+---
+# Un documento en YAML es UN NODO
+# Y en YAML hay 2 tipos de nodos
+# 1. Escalares: Valores sencillos
+# 2. Colecciones: Grupos de valores
+# No voy a contar aquí todos los tipos escalares ni todos los tipos de colección. Solo los que usaremos en el 99% de los casos.
+# YAML es un estandar (actualmente en v1.2) muy amplio.. y permite hacer cosas muy raras.
+---
+# Escalares: Números
+3
+---
+3.98
+---
+-1.98
+---
+# Booleanos
+true # True # TRUE
+---
+false # False # FALSE
+---
+# Textos: CON DIFERENCIA LO MAS COMPLEJO DE YAML
+Yo soy "un texto, 'escrito
+sin comillas 
+
+de #ningún tipo.
+---
+"Yo soy \"un texto, 'escrito
+entre 
+
+comillas #dobles."
+# La contrabarra como caracter de escape solo funciona entre comillas dobles
+# \\ \" \n \t \r
+---
+'Yo soy "un texto, ''escrito
+entre 
+
+comillas #simples.'
+# Los ENTER dentro de los textos se convierten en espacios.
+# A no ser que escriba 2 ENTERS seguidos, en cuyo caso se conserva un salto de línea.
+---
+
+# RESUMEN: EN YAML la recomendación es NUNCA USAR COMILLAS
+# Salvo que sea estrictamente necesario (si hay # dentro u otros caracteres especiales).
+
+# Y SOLO ESCRIBIMOS TEXTOS DE UNA LINEA CON ESTAS SINTAXIS
+# Porque yaml tiene otras 2 sintaxis adicionales para textos
+# Literal
+|2+
+  Empiezo a escribir un texto
+  Que puede ocupar varias lineas
+
+  Con saltos intermedios
+  Y caracteres raros: " ' # ' & * ?
+
+  Que se respetan tal cual
+  # El sangrado de la primera linea se descuenta del resto de lineas.
+  # Se borra el sangrando
+
+# Debo ser consistente con el sangrado.
+# Un tabulador (que en mi pantalla vea como 4 espacios) No es igual a 4 espacios.
+# Y yaml me dará error de sintaxis.
+# NO VALEN EDITORES DEL TIPO:
+# Nano, vi, vim
+# Notepad++
+# bloc de notas
+# Necesitamos un buen editor de texto: VSCODE, SUBLIME, CURSOR
+---
+# Folded: Es como literal, pero los saltos de linea TODOS son reemplazados por espacios.
+> 
+  docker container create
+    -p "8080:80"
+    --name 'my_container'
+    my_image
+---
+# Hay más tipos escalares: Fechas, nulo, binarios... No los voy a contar.
+# Colecciónes: Listas ordenadas y mapas desordenados (Hay más en YAML: Listadas desordenadas, mapas ordenados...)
+# Listas ordenadas: Colección de NODOS, que van en orden.
+- Nodo 1
+-     Nodo 2
+- Nodo 3
+---
+- texto
+- 33
+- true
+- 
+  - subitem1
+  - subitem2
+- - subitem1
+  - subitem2
+-
+                    - subitem1
+                    - subitem2
+
+ # La sublista tendría que sangrarla al menos 1 espaio en blanco con respecto al nivel anterior..
+ # Puedo usar los que quiera! PERO DEBO SER CONSISTENTE EN CADA NIVEL.
+---
+# Hay una sintaxis alternativa para listas, que esta TOTALMENTE DESACONSEJADA
+[item1, 33, TRUE]
+# No la usamos... por 2 motivos:
+# - Más dificil de leer para un humano
+# - Este fichero acabará en GIT... y GIT identifica cambios a nivel de linea.
+#   Con esta sintaxis solo sabria que un valor en la linea ha cambiado.. búscalo!
+# Solo hay un caso de uso legítimo para esta sintaxis:
+---
+[] # Listas vacias
+# Esta sintaxis está solo para compatibilidad coin JSON. ElEstandar YAML se ha comido a JSON:
+# Todo documento (el 99.,99%) JSON es un documento YAML
+---
+["item1", 33, true] # Esto que es?
+
+---
+# Mapas desordenados: Colecciónes clave valor (En JAVA Map<T,R>)
+ 
+clave1: valor1
+clave2:    33
+clave3: true
+clave4: 
+  - subitem1
+  - subitem2
+clave5:
+              subclave1:  subitem1
+              subclave2:  subitem2
+# Mismas reglas de sangrado que en sublistas
+---
+
+# NOTA, hemos dicho MAPAS DESORDENADOS
+clave1: valor1
+clave2: 33
+clave3: true
+---
+
+clave3: true
+clave1: valor1
+clave2: 33
+# Esos 2 documentos SON IDENTICOS PARA YAML. El orden no importa.
+---
+# Nota 2: Hay una sintaxis alternativa para mapas, que también está desaconsejada.
+# Ejemplo:
+{clave1: valor1, clave2: 33, clave3: true}
+# Se desaconseja su uso por los mismos motivos que las listas: difícil de leer y problemas con el control de versiones.
+# Solo está por compatibilidad con JSON.
+# Hay un caso de uso legítimo: 
+---
+{} # Mapa vacío, equivalente a un objeto vacío en JSON.
+# FINAL!
+---
+
+# JSON
+{
+  "nombre": "Iván",
+  "apellidos": [
+    "Osuna",
+    "Ayuste"
+  ],
+  "edad": 48,
+  "direccion": {
+     "calle":  "Me la invento",
+     "numero": "123",
+     "ciudad": "Ciudad Inventada"
+  }
+}
+
+---
+nombre:       Iván
+apellidos:
+            - Osuna
+            - Ayuste
+edad:         48
+direccion:
+  calle:      Me la invento
+  numero:     123
+  ciudad:     Ciudad Inventada
+
+---
+# Hasta aquí llega la sintaxis de YAML
+# Ahora, cada programa que usa YAML define su propio ESQUEMA (igual que hay esquemas en XML o en JSON)
+# Un esquema dictamina los nodos que debe contener un document, tipos de datos, qué claves son válidas.
+
+# Un documento según el esquema de kubernetes tiene es pinta:
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: mi-pod
+spec:
+  containers:
+    - name: mi-contenedor
+      image: mi-imagen
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+---
+
+# Un documento para netplan:
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: true
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+
+# Nuestro objetivo es aprender el esquema de documentos YAML de kubernetes en este curso.

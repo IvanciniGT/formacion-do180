@@ -520,7 +520,8 @@ apiVersion:              v1         # Esto es raro al principio
                                          # - batch/v1 (para gestionar trabajos por lotes como CronJobs y Jobs)
 
 metadata:
-  name:                     app1-produccion
+  name:                     app1-produccion    # Sirve de identificador del recurso
+                                               # Este nombre es UNICO..Para ese tipo de recurso, para el NAMESPACE en el que el recurso sea creado
 ```
 
 Y YA, acabado!

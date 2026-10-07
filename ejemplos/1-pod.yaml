@@ -1,0 +1,59 @@
+kind:                           Pod
+apiVersion:                     v1
+
+metadata:
+  name:                         ejemplo-pod
+
+spec:
+  containers:
+    - name:                     nginx
+      image:                    nginx:latest     # registry/repo:tag   Acoraros que "latest" es mala practica
+      imagePullPolicy:          IfNotPresent     # Always    Never       IfNotPresent
+                                # Always siempre la descarga, con independencia de que ya hubiera sido descargada antes
+                                # Never nunca la descarga, más vale que alguien la haya puesto allí antes (ES RARO, solo cosas muy especiales)
+                                # IfNotPresent solo la descarga si no está ya presente en el nodo (si no se ha descargado con anterioridad)
+
+                                # Cual interesa normalmente? PUES ES COMPLEJO. Depende principalmente de si uso tags fijos o flotantes
+                                # Si el tag es fijo, siempre apunta a la misma versión de la imagen: nginx:1.22.7, me interesa más usar IfNotPresent
+                                # Si el tag es variable, suele interesarme más: Always, de forma que cuando se vaya a desplegar me coja la ULTIMA QUE HAY:
+                                # Si tengo nginx: 1.22 que es un tag flotante, hoy puede apuntar a la 1.22.7 y mañana a la 1.22.8.
+                                # Si ya se descargó la 1.22.7, IfNotPresent no la volverá a descargar aunque haya una 1.22.8.
+                                # Always me garantiza que siempre se descargará la última versión disponible del tag flotante.
+
+                                # Luego hay que tener cuidado con otra cosa. Los registries públicos (como docker hub) tienen límites de tasa de descarga,
+                                # por lo que usar Always indiscriminadamente puede llevar a problemas si se hacen muchos despliegues.
+                                # Actualmente está por 200 descargas/hora para usuarios que no sean de pago.
+                                # En un cluster de kubernetes me puedo gastar eso en 5 minutos.
+      resources:
+        limits:
+          memory:               128Mi
+          cpu:                  "1"
+        requests:
+          memory:               128Mi
+          cpu:                  250m
+      env: # Variables de entorno para personalizar/configurar  el contenedor
+        - name:                 MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:             ejemplo-secret
+              key:              contraseña-root
+        - name:                 MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name:             ejemplo-configmap
+              key:              nombre-bbdd
+        - name:                 MYSQL_USER
+          valueFrom:
+            configMapKeyRef:
+              name:             ejemplo-configmap
+              key:              usuario-bbdd
+        - name:                 MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:             ejemplo-secret
+              key:              contraseña-usuario
+        - name:                 CHARSET
+          value:                UTF-8 # Esta el valor es fijo!
+          
+
+

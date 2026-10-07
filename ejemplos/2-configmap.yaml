@@ -1,0 +1,26 @@
+kind:                           ConfigMap
+apiVersion:                     v1
+
+metadata:
+  name:                         ejemplo-configmap
+
+# Es un conjunto de datos CLAVE VALOR
+data: # No lleva spec (Namespace, configmap y secret son los unicos documentos yaml de kubernetes que no tienen spec)
+  nombre-bbdd:                  mibbdd
+  usuario-bbdd:                 miusuario
+
+# Qué acabamos de resolver con esto:
+# - Separación de perfiles:
+#    - Desarrollo monta el archivo del pod
+#    - Operaciones (o quien sea) monta el archivo del configmap
+# No quiero a desarrollo conociendo las contraseñas de producción (configmap)
+# Ni quiero a operaciones toqueteando un archivo complejo para cambiar 3 datos.
+# - Independizar entornos.
+
+# Recordad que en kubernetes tendríamos 2 namespaces:
+# - namespace: app1-desa
+#              pod: ejemplo-pod (mismo fichero)
+#              config-map: ejemplo-configmap (fichero 1)
+# - namespace: app1-prod
+#              pod: ejemplo-pod (mismo fichero)
+#              config-map: ejemplo-configmap (fichero 2)

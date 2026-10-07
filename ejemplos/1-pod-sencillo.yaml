@@ -1,0 +1,11 @@
+kind:                           Pod
+apiVersion:                     v1
+
+metadata:
+  name:                         ejemplo-pod
+
+spec:
+  containers:
+    - name:                     nginx
+      image:                    nginx:latest
+      imagePullPolicy:          IfNotPresent

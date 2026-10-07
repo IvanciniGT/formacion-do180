@@ -346,3 +346,17 @@ En servicios:
 En un entorno de producción, los datos no se guardan en los HDD de los servidores.
 Los servidores tienen sus HDD, pero para su sistema operativo y sus programas.
 Los datos se guardan en cabinas de almacenamiento.
+
+
+
+---
+
+Para configurar entorno:
+- Descarga de kubectl.exe y meterlo en el path
+- Crear una carpeta en c:>\usuarios\Felipe\.kube
+- Y dentro ponemos un fichero llamado config
+   Ese fichero lleva:
+   - URL del cluster
+   - Usuario
+   - "Contraseña" del usuario
+   - Certificado CA que es la que firma el certificado https del cluster

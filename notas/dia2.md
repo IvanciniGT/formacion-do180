@@ -541,3 +541,6 @@ El verbo, que SI HACE FALTA! se da después.
     `kubectl delete -f <archivo.yaml>`      Borra los recursos que se definieron en el archivo YAML del cluster
 
     AQUI SI HAY LENGUAJE IMPERATIVO... En la acción que quiero hacer sobre esos recuros que tengo DEFINIDOS (en lenguaje DECLARATIVO)
+
+
+    

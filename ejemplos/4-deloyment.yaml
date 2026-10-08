@@ -1,0 +1,31 @@
+kind:                           Deployment
+apiVersion:                     apps/v1
+
+metadata:
+  name:                         ejemplo-despliegue
+
+spec:
+
+  replicas:                          2 # Número inicial de réplicas
+  # Antiguamente, las plantillas (lo que hay debajo de esta linea) se escribían en un documento independiente.
+  # Con su propio kind: Template
+  # Y entonces en los deployments dábamos una referencia a esa plantilla. Esa refrencia se hacía mediante los labels
+  # Eso ya no se hace... pero la referencia se debe seguir poniendo... y queda u npoco raro.. hay que acostumbrarse:
+
+  selector:
+    matchLabels:
+      app:                          servidor-web # Y esta linea, la misma que la que hayamos puesto en labels del template.
+
+  template:
+      metadata:
+        name:                        ejemplo-plantilla
+        labels:                      # En kubernetes acostumbramos mucho a etiquetar las cosas. 
+                                     # Y hay cosas que de hecho es obligatorio etiqyetarlas, como los templates 
+                                     # CLAVE: VALOR.  Las que quiera... kubernetes no se mete
+                                     # El 99% de la gente, usa una clave llamada app. No es obligatorio... Pero es una práctica aceptada en la industria
+          app:                        servidor-web
+      spec:
+        containers:
+          - name:                     nginx
+            image:                    nginx:latest
+            imagePullPolicy:          IfNotPresent

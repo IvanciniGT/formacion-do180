@@ -6,7 +6,10 @@ metadata:
 
 spec:
 
-  replicas:                          2 # Número inicial de réplicas
+  replicas:                          3 # Número inicial de réplicas
+                                       # kubectl scale deployment <QUE_DEPLYMENT> --replicas=<NÚMERO_DE_RÉPLICAS>
+                                       # Por ejemplo:
+                                       # kubectl scale deployment ejemplo-despliegue --replicas=5
   # Antiguamente, las plantillas (lo que hay debajo de esta linea) se escribían en un documento independiente.
   # Con su propio kind: Template
   # Y entonces en los deployments dábamos una referencia a esa plantilla. Esa refrencia se hacía mediante los labels

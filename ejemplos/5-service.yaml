@@ -1,0 +1,11 @@
+
+kind:         Service
+apiVersion:   v1
+metadata:
+  name:       mi-nginx
+spec:
+  selector:
+    app:      servidor-web
+  ports:
+  - port:       81
+    targetPort: 80

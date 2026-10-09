@@ -84,14 +84,16 @@ apiVersion:     v1
 
 Para crear estas plantillas, kubernetes ofrece 3 tipos de recursos: Deployments, StatefulSets, DaemonSets:
 - Deployment:   Plantilla de pod + Número inicial de réplicas (es decir, de pods que quiero que kubernetes cree desde esa plantilla)
-- StatefulSet:  Plantilla de pod + Número inicial de réplicas + ???
+- StatefulSet:  Plantilla de pod + Número inicial de réplicas + Plantilla de PVC
 - Daemonset:    Plantilla de pod de la que Kubernetes crea tantas réplicas como nodos hay en el cluster (1 réplica por nodo)
                 Los daemonsets son raros... y para despliegues de apps es muy muy raro que se usen.
                 Son más para cosas de infraestructura:
                 - Monitorización (necesito un programa (pod) en cada nodo del cluster)
                 - ...
 La elección de si crear un Deployment o un Statefulset NO LA TOMAMOS... VA TOTALMENTE CONDICIONADA POR EL TIPO DE PROGRAMA QUE QUEREMOS MONTAR
-
+- Apache -> Deployment
+- MariaDB -> StatefulSet
+  
 ## Configmap y secrets
 
 Conjuntos clave-valor para:
